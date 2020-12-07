@@ -46,9 +46,13 @@ module PasswordPhilosophy =
 
 
     let appearsInExactlyOneOfIndices str idx1 idx2 pattern =
+        let matchesOneOfIndices idx =
+            let i = idx + 1u
+            i = idx1 || i = idx2
+        
         str 
         |> findOccurrencesOf pattern 
-        |> List.filter (fun i -> (i + 1u) = idx1 || (i + 1u) = idx2)
+        |> List.filter matchesOneOfIndices
         |> List.length
         |> ((=) 1)
 
@@ -69,7 +73,7 @@ module PasswordPhilosophy =
 
 
     let runExample () =
-        let path = Path.Combine(__SOURCE_DIRECTORY__, "input1.txt")
+        let path = Path.Combine(__SOURCE_DIRECTORY__, "input.txt")
         File.ReadAllLines(path)
         |> Array.map parseRecord
         |> Array.choose id
