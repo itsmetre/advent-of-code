@@ -2,14 +2,10 @@ open System
 open System.IO
 
 module CustomCustoms =
-    let splitOn (separator: char) (input: string) =
-        input.Split([| separator |])
-    
-
-    let toCharArray (str: string) = str.ToCharArray()
+    let private toCharArray (str: string) = str.ToCharArray()
 
 
-    let splitIntoGroups (lines: string list) = 
+    let private splitIntoGroups (lines: string list) = 
         let rec loop groups group lines =
             match lines with
                 | []                                                -> group :: groups
@@ -19,13 +15,13 @@ module CustomCustoms =
         loop [] [] lines
 
 
-    let questionsAnyoneAnswered (group: string list) =
+    let private questionsAnyoneAnswered (group: string list) =
         group
         |> List.collect (toCharArray >> Array.toList)
         |> List.fold (fun acc x -> Set.add x acc) (Set.empty)
 
 
-    let questionsEveryoneAnswered (group: string list) =
+    let private questionsEveryoneAnswered (group: string list) =
         group
         |> List.map (List.singleton >> questionsAnyoneAnswered)
         |> Set.intersectMany
